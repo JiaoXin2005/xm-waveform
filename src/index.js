@@ -1,5 +1,7 @@
+import { style } from './utils'
+
 import DefaultVar from './constants.js'
-console.log((new DefaultVar()).CANVAS_HEIGHT)
+
 
 /** @type {HTMLCanvasElement}  */
 let canvas = document.querySelector('#canvas')
@@ -53,7 +55,7 @@ draw()
 class XmWaveform {
   
   _defaultOptions = {
-    contianer: '',
+    container: null,
     topHeight: 30,
     progressSpace: 2,
     bottomHeight: 8,
@@ -63,8 +65,18 @@ class XmWaveform {
     barGap: 1
   }
 
-  constructor() {
-    
+  constructor(options) {
+    this._options = {...this._defaultOptions, ...options}
+    this.container = 'string' === typeof this._options.container
+      ? document.querySelector(this._options.container)
+      : this._options.container
+
+    this._createWaveCanvas()
+  }
+
+  _createWaveCanvas() {
+    this.waveCavas = document.createElement('canvas')
+    this.container.appendChild(this.waveCavas)
   }
 
 }
@@ -72,5 +84,5 @@ class XmWaveform {
 
 
 let xmWaveform = new XmWaveform({
-  contianer: '#waveform'
+  container: '#waveform'
 })
