@@ -1,4 +1,4 @@
-import { style } from './utils'
+import { style, hex2rgb } from './utils'
 
 import DefaultVar from './constants.js'
 
@@ -62,27 +62,158 @@ class XmWaveform {
     width: 440,
     height: 40,
     barWidth: 2,
-    barGap: 1
+    barGap: 1,
+    pixelRatio: window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI || 1,
+    waveColor: '#E8E8E8',
+    progressColor: '#F86442',
+    opacity: 0.7
   }
+
+  waveCanvas = null
 
   constructor(options) {
     this._options = {...this._defaultOptions, ...options}
+    this._defineHeight()
     this.container = 'string' === typeof this._options.container
       ? document.querySelector(this._options.container)
       : this._options.container
 
+    // this._createWaveCanvas()
+
+    this._init()
+    
+  }
+
+  _defineHeight() {
+    Object.defineProperty(this._options, 'height', { get: function () {
+      return (+this.topHeight) + (+this.progressSpace) + (+this.bottomHeight)
+    } })
+  }
+
+  _init() {
+    style(this.container, {
+      'position': 'relative',
+      'display': 'inline-block'
+    })
+
     this._createWaveCanvas()
+
+    this._createProgressWrapper()
+    this._createProgressCanvas()
   }
 
   _createWaveCanvas() {
-    this.waveCavas = document.createElement('canvas')
-    this.container.appendChild(this.waveCavas)
+    this.waveCanvas = document.createElement('canvas')
+    this.waveCanvasCtx = this.waveCanvas.getContext('2d')
+
+    let width = this._options.width
+    let height = this._options.height
+
+    this.container.appendChild(
+      this._setHDCanvas(this.waveCanvas, {width, height })
+    )
   }
+
+  _setHDCanvas = (canvasElm, {width, height}) => {
+    let ctx = canvasElm.getContext('2d')
+    let dpr = this._options.pixelRatio
+    canvasElm.width = width * dpr
+    canvasElm.height = height *  dpr
+    ctx.scale(dpr, dpr)
+    return style(canvasElm, {
+      width: width + 'px',
+      height: height + 'px',
+      display: 'block'
+    })
+  }
+
+  _getFillRectColor(color, needOpacity = false) {
+    let c = color
+    if (/^#/.test(color)) {
+      let rgb = hex2rgb(color)
+      c = needOpacity 
+        ? `rgba(${rgb.r},${rgb.g},${rgb.b},${this._options.opacity})` 
+        : `rgba(${rgb.r},${rgb.g},${rgb.b},1)` 
+    }
+    return c
+  }
+
+  _drawBars = () => {
+    let x = 0
+    const CANVAS_TOP_HEIGHT = this._options.topHeight
+    const PROGRESS_SPACE = this._options.progressSpace
+    const CANVAS_BOTTOM_HEIGHT = this._options.bottomHeight
+    const BAR_WIDTH = this._options.barWidth
+    const BAR_GAP = this._options.barGap
+
+    const WIDTH = this._options.width
+    const HEIGHT = this._options.height
+
+    const topHeightRatio = CANVAS_TOP_HEIGHT / HEIGHT
+    const bottomHeightRatio = CANVAS_BOTTOM_HEIGHT / HEIGHT
+
+    let drump = ~~(wavaDataArr.length / WIDTH)
+    
+    for (let i = 0; i < wavaDataArr.length; i++) {
+      let canvasCtx = this.waveCanvasCtx
+
+      canvasCtx.save()
+
+      let curBar = wavaDataArr[i]
+
+      canvasCtx.fillStyle = this._getFillRectColor(this._options.waveColor)
+      canvasCtx.fillRect(x, CANVAS_TOP_HEIGHT - curBar * topHeightRatio, BAR_WIDTH, curBar * topHeightRatio)
+
+      canvasCtx.fillStyle = this._getFillRectColor(this._options.waveColor, true)
+      canvasCtx.fillRect(x, CANVAS_TOP_HEIGHT + PROGRESS_SPACE, BAR_WIDTH, curBar * bottomHeightRatio)
+
+      x += BAR_WIDTH + BAR_GAP
+      
+      canvasCtx.restore()
+    }
+  }
+
+  /*
+   * PROGRESS 
+   */
+  _createProgressWrapper() {
+    this.progressWrapper = document.createElement('div')
+    this.container.appendChild(
+      style(this.progressWrapper, {
+        position: 'absolute',
+        zIndex: 2,
+        left: 0,
+        top: 0,
+        bottom: 0,
+        overflow: 'hidden',
+        width: '0',
+        display: 'none',
+        pointerEvents: 'none'
+      })
+    )
+  }
+
+  _createProgressCanvas() {
+    this.progressCanvas = document.createElement('canvas')
+    this.progressCanvasCtx = this.progressCanvas.getContext('2d')
+
+    let width = this._options.width
+    let height = this._options.height
+
+    this.progressWrapper.appendChild(
+      this._setHDCanvas(this.progressCanvas, { width, height })
+    )
+  }
+
+  /*********************
+   * Public functions. *
+   *********************/
 
 }
 
 
-
 let xmWaveform = new XmWaveform({
-  container: '#waveform'
+  container: '#waveform',
 })
+
+xmWaveform._drawBars()
