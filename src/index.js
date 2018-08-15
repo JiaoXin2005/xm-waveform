@@ -1,4 +1,5 @@
 import { style, hex2rgb } from './utils'
+import DrawCanvas from './DrawCanvas'
 
 import DefaultVar from './constants.js'
 
@@ -66,7 +67,8 @@ class XmWaveform {
     pixelRatio: window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI || 1,
     waveColor: '#E8E8E8',
     progressColor: '#F86442',
-    opacity: 0.7
+    opacity: 0.7,
+    wavaDataArr: wavaDataArr
   }
 
   waveCanvas = null
@@ -80,7 +82,9 @@ class XmWaveform {
 
     // this._createWaveCanvas()
 
-    this._init()
+    // this._init()
+
+    this._init2()
     
   }
 
@@ -88,6 +92,16 @@ class XmWaveform {
     Object.defineProperty(this._options, 'height', { get: function () {
       return (+this.topHeight) + (+this.progressSpace) + (+this.bottomHeight)
     } })
+  }
+
+  _init2() {
+    style(this.container, {
+      'position': 'relative',
+      'display': 'inline-block'
+    })
+    this._createProgressWrapper()
+    this.waveDrawer = new DrawCanvas(this.container, this._options)
+    this.progressDrawer = new DrawCanvas(this.progressWrapper, this._options)
   }
 
   _init() {
@@ -216,4 +230,4 @@ let xmWaveform = new XmWaveform({
   container: '#waveform',
 })
 
-xmWaveform._drawBars()
+// xmWaveform._drawBars()
