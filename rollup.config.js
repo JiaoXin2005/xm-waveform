@@ -7,7 +7,8 @@ export default {
   input: 'src/index.js',
   output: {
     file: 'dist/xm-waveform.js',
-    format: 'cjs'   
+    format: 'cjs',
+    sourcemap: true
   },
   plugins: [
     resolve(),

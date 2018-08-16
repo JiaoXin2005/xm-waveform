@@ -4,8 +4,23 @@ export const style = (el, styles) => {
       el.style[key] = styles[key]
     }
   }
-  
+
   return el
+}
+
+export const setHDCanvas = (canvasElm, { width, height }) => {
+  let ctx = canvasElm.getContext('2d')
+  let dpr = window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI || 1
+
+  canvasElm.width = width * dpr
+  canvasElm.height = height * dpr
+
+  ctx.scale(dpr, dpr)
+  return style(canvasElm, {
+    width: width + 'px',
+    height: height + 'px',
+    display: 'block'
+  })
 }
 
 export const hex2rgb = hex => {

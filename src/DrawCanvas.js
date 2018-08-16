@@ -1,4 +1,4 @@
-import {style} from './utils'
+import { style, hex2rgb } from './utils'
 
 class DrawCanvas {
   constructor(container, _options) {
@@ -27,7 +27,6 @@ class DrawCanvas {
     )
   }
 
-
   _setHDCanvas = (canvasElm, { width, height }) => {
     let ctx = this.canvasCtx
     let dpr = this._options.pixelRatio
@@ -41,6 +40,17 @@ class DrawCanvas {
       height: height + 'px',
       display: 'block'
     })
+  }
+
+  _getFillRectColor(color, needOpacity = false) {
+    let c = color
+    if (/^#/.test(color)) {
+      let rgb = hex2rgb(color)
+      c = needOpacity
+        ? `rgba(${rgb.r},${rgb.g},${rgb.b},${this._options.opacity})`
+        : `rgba(${rgb.r},${rgb.g},${rgb.b},1)`
+    }
+    return c
   }
 
   drawBars = () => {
@@ -68,12 +78,10 @@ class DrawCanvas {
 
       let curBar = wavaDataArr[i]
 
-      // canvasCtx.fillStyle = this._getFillRectColor(this._options.waveColor)
-      canvasCtx.fillStyle = '#F86442'
+      canvasCtx.fillStyle = this._getFillRectColor(this._options.color)
       canvasCtx.fillRect(x, CANVAS_TOP_HEIGHT - curBar * topHeightRatio, BAR_WIDTH, curBar * topHeightRatio)
 
-      // canvasCtx.fillStyle = this._getFillRectColor(this._options.waveColor, true)
-      canvasCtx.fillStyle = '#E8E8E8'
+      canvasCtx.fillStyle = this._getFillRectColor(this._options.color, true)
       canvasCtx.fillRect(x, CANVAS_TOP_HEIGHT + PROGRESS_SPACE, BAR_WIDTH, curBar * bottomHeightRatio)
 
       x += BAR_WIDTH + BAR_GAP
