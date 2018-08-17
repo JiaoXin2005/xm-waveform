@@ -1,4 +1,4 @@
-import { setHDCanvas } from './utils'
+import { setHDCanvas, style } from './utils'
 
 class ButtomCavas {
   
@@ -25,7 +25,14 @@ class ButtomCavas {
 
     let width = this._option.width
     let height = this._option.height
-
+    style(this.canvas, {
+      zIndex: '3',
+      position: 'absolute',
+      marginLeft: '-18px',
+      left: 0,
+      top: '13px',
+      pointerEvents: 'none'
+    })
     this.container.appendChild(
       setHDCanvas(this.canvas, { width, height })
     )
@@ -44,6 +51,9 @@ class ButtomCavas {
     gradient.addColorStop(1, "#fff")
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, this._option.width, this._option.height)
+    ctx.fillStyle = '#fff'
+    ctx.arc(r, r, 2, 0, 2 * Math.PI)
+    ctx.fill()
   }
 
 
