@@ -14,10 +14,11 @@ export default {
     resolve(),
     babel({
       exclude: 'node_modules/**',
-      plugins: ['external-helpers', 'transform-runtime'],
-      runtimeHelpers: true
+      // plugins: ['external-helpers', 'transform-runtime'],
+      // runtimeHelpers: true
+      plugins: ['external-helpers'],
     }),
     commonjs(),
-    serve('./')
+    // serve('./')
   ]
 }
