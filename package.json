@@ -1,6 +1,6 @@
 {
   "name": "xm-waveform",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": " wavform for ximalaya",
   "main": "dist/xm-waveform.js",
   "scripts": {

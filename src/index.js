@@ -59,6 +59,7 @@ class XmWaveform extends Observer{
     this.buttomDrawer = new ButtomCanvas(this.container)
 
     this._bindEvents()
+    this.emit('initComplete')
   }
 
   _fetchData() {
