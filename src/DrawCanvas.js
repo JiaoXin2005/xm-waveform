@@ -70,7 +70,7 @@ class DrawCanvas {
     const topHeightRatio = CANVAS_TOP_HEIGHT / dataHeight
     const bottomHeightRatio = CANVAS_BOTTOM_HEIGHT / dataHeight
 
-    let drump = ~~(wavaDataArr.length / WIDTH)
+    // let drump = ~~(wavaDataArr.length / WIDTH)
 
     for (let i = 0; i < wavaDataArr.length; i++) {
       let canvasCtx = this.canvasCtx

@@ -33,6 +33,10 @@ class Observer {
     }
   }
 
+  unAll() {
+    this.handlers = null;
+  }
+
   emit(event, ...args) {
     if (!this.handlers) {
       return this
