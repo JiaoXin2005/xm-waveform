@@ -64,10 +64,11 @@ class DrawCanvas {
     const WIDTH = this._options.width
     const HEIGHT = this._options.height
     
-    let wavaDataArr = this._options.wavaDataArr
+    let dataHeight = this._options.wavaData.height
+    let wavaDataArr = this._options.wavaData.samples
 
-    const topHeightRatio = CANVAS_TOP_HEIGHT / HEIGHT
-    const bottomHeightRatio = CANVAS_BOTTOM_HEIGHT / HEIGHT
+    const topHeightRatio = CANVAS_TOP_HEIGHT / dataHeight
+    const bottomHeightRatio = CANVAS_BOTTOM_HEIGHT / dataHeight
 
     let drump = ~~(wavaDataArr.length / WIDTH)
 

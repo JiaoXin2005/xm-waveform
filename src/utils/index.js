@@ -30,3 +30,17 @@ export const hex2rgb = hex => {
 
   return { r: (bigint >> 16) & 255, g: (bigint >> 8) & 255, b: bigint & 255 }
 }
+
+export const isDev = () => {
+  let host = window.location.host
+  if (/^test\.ximalaya\.com$/.test(host)) {
+    return true
+  }
+  if (/^\d{0,4}\.\d{0,4}\.\d{0,4}\.\d{0,4}$/.test(host)) {
+    return true
+  }
+  if (/localhost/.test(host)) {
+    return true
+  }
+  return false
+}

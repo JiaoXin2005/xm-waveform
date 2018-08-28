@@ -12,8 +12,22 @@
   <!-- <canvas id="canvas"></canvas> -->
   <script src="./dist/xm-waveform.js"></script>
   <script>
+    // let fdfsUrl = 'http://fdfs.xmcdn.com/'
+    // let waves = 'group39/M00/A0/BE/wKgJn1poJavQXSBWAAAKpLwdBt84384.js'
+
+    // let wave = {
+    //   draw: (id, data) => {
+    //     console.log(id, data)
+    //   }
+    // }
+
+    // let script = document.createElement('script')
+    // script.src = fdfsUrl + waves
+    // document.body.appendChild(script)
+
     let xmWaveform = new XmWaveform({
         container: '#waveform',
+        waveJsUrl: 'group39/M00/A0/BE/wKgJn1poJavQXSBWAAAKpLwdBt84384.js'
       })
 
       let x = 0

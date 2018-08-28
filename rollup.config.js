@@ -18,9 +18,9 @@ module.exports = [
       resolve(),
       babel({
         exclude: 'node_modules/**',
-        // plugins: ['external-helpers', 'transform-runtime'],
-        // runtimeHelpers: true
-        plugins: ['external-helpers'],
+        plugins: ['external-helpers', 'transform-runtime'],
+        runtimeHelpers: true
+        // plugins: ['external-helpers'],
       }),
       commonjs(),
       !isProd && serve('./')
@@ -37,7 +37,9 @@ module.exports = [
       resolve(),
       babel({
         exclude: 'node_modules/**',
-        plugins: ['external-helpers'],
+        plugins: ['external-helpers', 'transform-runtime'],
+        runtimeHelpers: true
+        // plugins: ['external-helpers'],
       }),
       commonjs(),
       uglify()
