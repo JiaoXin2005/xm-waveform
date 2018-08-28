@@ -71,7 +71,7 @@ class XmWaveform extends Observer{
   }
 
   _bindEvents() {
-    this.container.addEventListener('mouseup', (e) => {
+    this._mouseUpHandler = (e) => {
       e.stopPropagation()
       let clientX = e.clientX
       let rect = this.container.getBoundingClientRect()
@@ -81,7 +81,13 @@ class XmWaveform extends Observer{
 
       this.emit('mouseup', ratio)
       this.updateProgress(ratio)
-    }, true)
+    }
+
+    this.container.addEventListener('mouseup', this._mouseUpHandler, true)
+  }
+
+  _removeEvent() {
+    this.container.removeEventListener('mouseup', this._mouseUpHandler)
   }
 
   _filterColor = (color) => {
@@ -140,6 +146,13 @@ class XmWaveform extends Observer{
   updateProgress(ratio) {
     this._updateProgress(ratio)
     this._updateButtom(ratio)
+  }
+
+  destory() {
+    this._removeEvent()
+    while (this.container.firstChlid) {
+      this.container.removeChild(this.container.firstChlid)
+    }
   }
 
 }

@@ -3,7 +3,7 @@ const removeFun = () => {
 }
 
 const removeScript = (script) => {
-  document.body.removeChild(script)
+  script && document.body.removeChild(script)
 }
 
 const jsonp = (url) => {
