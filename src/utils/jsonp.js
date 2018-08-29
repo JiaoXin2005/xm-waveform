@@ -9,25 +9,21 @@ const removeScript = (script) => {
 const jsonp = (url) => {
 
   return new Promise((resolve, reject) => {
-    let timeId = null
+    const script = document.createElement('script')
     let wave = {
       draw: (id, data) => {
         resolve({id, data})
-        timeId = setTimeout(() => {
-          removeScript(script)
-          removeFun()
-        }, 1000);
+        removeScript(script)
+        removeFun()
       }
     }
     window.wave = wave
-    const script = document.createElement('script')
     script.src = url
     document.body.appendChild(script)
     script.onerror = () => {
       reject(new Error(`fetch ${url} error`))
       removeScript(script)
       removeFun()
-      timeId && clearTimeout(timeId)
     }
   })
 }
