@@ -1,7 +1,7 @@
 import { isDev } from './index'
 
 const xmAddress = {
-  fdfsUrl: isDev() ? 'http://fdfs.test.ximalaya.com/' : 'http://fdfs.xmcdn.com/'
+  fdfsUrl: isDev() ? '//fdfs.test.ximalaya.com/' : '//fdfs.xmcdn.com/'
 }
 
 export default xmAddress
