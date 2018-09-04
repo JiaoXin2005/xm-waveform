@@ -152,9 +152,7 @@ class XmWaveform extends Observer{
   destory() {
     this._removeEvent()
     this.unAll()
-    while (this.container.firstChild) {
-      this.container.removeChild(this.container.firstChild)
-    }
+    this.container.innerHTML = ''
   }
 
 }
