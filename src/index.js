@@ -47,28 +47,46 @@ class XmWaveform extends Observer{
   }
 
   async _init() {
-    await this._fetchData()
-    style(this.container, {
-      'position': 'relative',
-      'display': 'inline-block'
-    })
-    this._createProgressWrapper()
-    this.waveDrawer = new DrawCanvas(this.container, this._filterColor('waveColor'))
-    this.progressDrawer = new DrawCanvas(this.progressWrapper, this._filterColor('progressColor'))
-
-    this.buttomDrawer = new ButtomCanvas(this.container)
-
-    this._bindEvents()
-    this.emit('initComplete')
+    try {
+      this._PromiseF = this._fetchData()
+      await this._PromiseF()
+      style(this.container, {
+        'position': 'relative',
+        'display': 'inline-block'
+      })
+      this._createProgressWrapper()
+      this.waveDrawer = new DrawCanvas(this.container, this._filterColor('waveColor'))
+      this.progressDrawer = new DrawCanvas(this.progressWrapper, this._filterColor('progressColor'))
+  
+      this.buttomDrawer = new ButtomCanvas(this.container)
+  
+      this._bindEvents()
+      this.emit('initComplete')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   _fetchData() {
-    let url = this._options.fdfsUrl + this._options.waveJsUrl
-    return jsonp(url)
-      .then(res => {
-        this.wavaData = res.data
-      })
-      .catch(err => console.warn(err))
+    let  _reject
+    const p = new Promise((resolve, reject) => {
+      _reject = reject
+      let url = this._options.fdfsUrl + this._options.waveJsUrl
+      jsonp(url)
+        .then(res => {
+          this.wavaData = res.data
+          resolve(res.data)
+        })
+        .catch(err => console.warn(err))
+    })
+
+    return (f) => {
+      if (!f) {
+        return p
+      } else {
+        _reject()
+      }
+    }
   }
 
   _bindEvents() {
@@ -150,6 +168,7 @@ class XmWaveform extends Observer{
   }
 
   destory() {
+    this._PromiseF(true) // 阻止promise接口调用
     this._removeEvent()
     this.unAll()
     this.container.innerHTML = ''

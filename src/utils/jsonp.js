@@ -12,7 +12,7 @@ const removeScript = (script) => {
   script && document.body.removeChild(script)
 }
 
-const jsonp = (url) => {
+const jsonp = (url, rejectFn) => {
 
   return new Promise((resolve, reject) => {
     const script = document.createElement('script')
