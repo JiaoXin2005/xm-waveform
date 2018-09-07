@@ -140,6 +140,7 @@ class XmWaveform extends Observer{
   }
 
   _updateProgress(ratio) {
+    if (!this.progressWrapper) return null
     let width = ~~(ratio * this._options.width)
     width >= this._options.width && (width = this._options.width)
     width <= 0 && (width = 0)
@@ -150,6 +151,7 @@ class XmWaveform extends Observer{
   }
 
   _updateButtom(ratio) {
+    if (!this.buttomDrawer) return null
     let left = ~~(ratio * this._options.width)
     left >= this._options.width && (left = this._options.width)
     left <= 0 && (left = 0)
