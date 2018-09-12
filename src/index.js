@@ -179,22 +179,3 @@ class XmWaveform extends Observer{
 }
 
 export default XmWaveform
-
-// let xmWaveform = new XmWaveform({
-//   container: '#waveform',
-// })
-
-// let x = 0
-// function update(){
-//   x+=0.001
-//   xmWaveform.updateProgress(x)
-//   window.requestAnimationFrame(update)
-// }
-
-// xmWaveform.on('mouseup', (aa) => {
-
-// })
-
-// requestAnimationFrame(update)
-
-// xmWaveform._drawBars()
