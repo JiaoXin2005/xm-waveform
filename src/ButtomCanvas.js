@@ -26,7 +26,7 @@ class ButtomCavas {
     let width = this._option.width
     let height = this._option.height
     style(this.canvas, {
-      zIndex: '3',
+      zIndex: '2',
       position: 'absolute',
       marginLeft: '-18px',
       left: 0,
